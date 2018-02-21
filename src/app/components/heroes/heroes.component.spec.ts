@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { HeroesComponent } from './heroes.component';
 
@@ -10,7 +10,7 @@ describe('HeroesComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ HeroesComponent ],
-      imports: [ FormsModule]
+      schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();
   }));
