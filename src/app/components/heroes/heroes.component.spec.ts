@@ -7,11 +7,21 @@ import { HeroService } from '@services/hero.service';
 describe('HeroesComponent', () => {
   let component: HeroesComponent;
   let fixture: ComponentFixture<HeroesComponent>;
+  let heroServiceStub: HeroService;
 
   beforeEach(async(() => {
+    heroServiceStub = {
+      getHeroes: () => {
+          return [];
+      }
+    }
+
     TestBed.configureTestingModule({
       declarations: [ HeroesComponent ],
-      providers: [HeroService],
+      providers: [{
+        provide: HeroService,
+        useValue: heroServiceStub
+      }],
       schemas: [ NO_ERRORS_SCHEMA ],
 
     })
