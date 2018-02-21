@@ -3,6 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { HeroesComponent } from './heroes.component';
 import { HeroService } from '@services/hero.service';
+import { MockHeroService } from '@services/hero.service.mock';
 
 describe('HeroesComponent', () => {
   let component: HeroesComponent;
@@ -10,17 +11,11 @@ describe('HeroesComponent', () => {
   let heroServiceStub: HeroService;
 
   beforeEach(async(() => {
-    heroServiceStub = {
-      getHeroes: () => {
-          return [];
-      }
-    }
-
     TestBed.configureTestingModule({
       declarations: [ HeroesComponent ],
       providers: [{
         provide: HeroService,
-        useValue: heroServiceStub
+        useClass: MockHeroService
       }],
       schemas: [ NO_ERRORS_SCHEMA ],
 
