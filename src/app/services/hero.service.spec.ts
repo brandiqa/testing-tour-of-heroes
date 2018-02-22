@@ -11,7 +11,7 @@ describe('HeroService', () => {
       imports: [
         HttpClientModule,
         HttpClientTestingModule
-      ]
+      ],
       providers: [HeroService, MessageService]
     });
   });
