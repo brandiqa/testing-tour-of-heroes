@@ -18,7 +18,6 @@ describe('HeroesComponent', () => {
         useClass: MockHeroService
       }],
       schemas: [ NO_ERRORS_SCHEMA ],
-
     })
     .compileComponents();
   }));
