@@ -6,7 +6,6 @@
       "@app/*": ["app/*"],
       "@components/*": ["app/components/*"],
       "@models/*": ["app/models/*"],
-      "@mocks/*": ["app/mocks/*"],
       "@services/*": ["app/services/*"],
     },
     "outDir": "./dist/out-tsc",
