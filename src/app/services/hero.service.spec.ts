@@ -5,7 +5,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HeroService } from './hero.service';
 import { MessageService } from './message.service';
 
-describe('HeroService', () => {
+fdescribe('HeroService', () => {
+
+  let service;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -16,7 +19,12 @@ describe('HeroService', () => {
     });
   });
 
-  it('should be created', inject([HeroService], (service: HeroService) => {
-    expect(service).toBeTruthy();
+  beforeEach(inject([HeroService], s => {
+    service = s;
   }));
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+
 });
