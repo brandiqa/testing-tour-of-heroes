@@ -6,6 +6,12 @@ import { HeroService } from './hero.service';
 import { MessageService } from './message.service';
 import { Hero } from '@models/hero.model';
 
+const data = [
+  { id: 1, name: 'Hulk' },
+  { id: 2, name: 'Thor'},
+  { id: 3, name: 'Iron Man'}
+] as Hero[];
+
 describe('HeroService', () => {
 
   let service;
@@ -14,11 +20,7 @@ describe('HeroService', () => {
   let mockHeroes: Hero[];
 
   beforeEach(() => {
-    mockHeroes = [
-      { id: 1, name: 'Hulk' },
-      { id: 2, name: 'Thor'},
-      { id: 3, name: 'Iron Man'}
-    ] as Hero[];
+    mockHeroes = [...data];
   });
 
   beforeEach(() => {
@@ -45,15 +47,16 @@ describe('HeroService', () => {
   });
 
   describe('getHeroes', () => {
+    mockHeroes = [...data];
+
     it('should return mock heroes', () => {
       service.getHeroes().subscribe(
-        heroes => expect(heroes).toEqual(mockHeroes),
+        heroes => expect(heroes.length).toEqual(mockHeroes.length),
         fail
       );
       // Receive GET request
       const req = httpTestingController.expectOne(service.heroesUrl);
       expect(req.request.method).toEqual('GET');
-
       // Respond with the mock heroes
       req.flush(mockHeroes);
     });
@@ -61,18 +64,49 @@ describe('HeroService', () => {
 
   describe('updateHero', () => {
     it('should update hero', () => {
-      const updateHero: Hero = { id: 1, name: 'Superman' };
-      service.updateHero(updateHero).subscribe(
-        response => expect(response).toEqual(updateHero),
+      const mockHero: Hero = mockHeroes[0];
+      service.updateHero(mockHero).subscribe(
+        response => expect(response).toEqual(mockHero),
         fail
       );
       // Receive PUT request
       const req = httpTestingController.expectOne(service.heroesUrl);
       expect(req.request.method).toEqual('PUT');
       // Respond with the updated hero
-      req.flush({id: 1, name: 'Superman' });
+      req.flush(mockHero);
     });
   });
 
+  describe('deleteHero', () => {
+    mockHeroes = [...data];
 
+    const mockHero: Hero = mockHeroes[0];
+    const mockId = mockHero.id;
+
+    it('should delete hero using id', () => {
+      const mockUrl = `${service.heroesUrl}/${mockId}`;
+      service.deleteHero(mockId).subscribe(
+        response => expect(response).toEqual(mockId),
+        fail
+      );
+      // Receive DELETE request
+      const req = httpTestingController.expectOne(mockUrl);
+      expect(req.request.method).toEqual('DELETE');
+      // Respond with the updated hero
+      req.flush(mockId);
+    });
+
+    it('should delete hero using hero object', () => {
+      const mockUrl = `${service.heroesUrl}/${mockHero.id}`;
+      service.deleteHero(mockHero).subscribe(
+        response => expect(response).toEqual(mockHero.id),
+        fail
+      );
+      // Receive DELETE request
+      const req = httpTestingController.expectOne(mockUrl);
+      expect(req.request.method).toEqual('DELETE');
+      // Respond with the updated hero
+      req.flush(mockHero.id);
+    });
+  });
 });
