@@ -8,7 +8,6 @@ import { MockHeroService } from '@services/hero.service.mock';
 describe('HeroesComponent', () => {
   let component: HeroesComponent;
   let fixture: ComponentFixture<HeroesComponent>;
-  let heroServiceStub: HeroService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

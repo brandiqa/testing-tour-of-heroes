@@ -8,6 +8,6 @@ export class MockHeroService {
   }
 
   getHero() {
-    return of({})
+    return of({});
   }
 }
