@@ -6,13 +6,11 @@ import { HeroService } from './hero.service';
 import { MessageService } from './message.service';
 import { Hero } from '@models/hero.model';
 
-const data = [
+const mockData = [
   { id: 1, name: 'Hulk' },
   { id: 2, name: 'Thor'},
   { id: 3, name: 'Iron Man'}
 ] as Hero[];
-
-let mockHeroes: Hero[];
 
 describe('HeroService', () => {
 
@@ -33,6 +31,16 @@ describe('HeroService', () => {
     service = s;
   }));
 
+  beforeEach(() => {
+    this.mockHeroes = [...mockData];
+    this.mockHero = this.mockHeroes[0];
+    this.mockId = this.mockHero.id;
+  });
+
+  const apiUrl = (id: number) => {
+    return `${service.heroesUrl}/${this.mockId}`;
+  };
+
   afterEach(() => {
     // After every test, assert that there are no more pending requests.
     httpTestingController.verify();
@@ -44,56 +52,38 @@ describe('HeroService', () => {
 
   describe('getHeroes', () => {
 
-    beforeEach(() => {
-      mockHeroes = [...data];
-    });
-
     it('should return mock heroes', () => {
       service.getHeroes().subscribe(
-        heroes => expect(heroes.length).toEqual(mockHeroes.length),
+        heroes => expect(heroes.length).toEqual(this.mockHeroes.length),
         fail
       );
       // Receive GET request
       const req = httpTestingController.expectOne(service.heroesUrl);
       expect(req.request.method).toEqual('GET');
       // Respond with the mock heroes
-      req.flush(mockHeroes);
+      req.flush(this.mockHeroes);
     });
   });
 
   describe('updateHero', () => {
 
-    beforeEach(() => {
-      mockHeroes = [...data];
-    });
-
     it('should update hero', () => {
-      const mockHero: Hero = mockHeroes[0];
-      service.updateHero(mockHero).subscribe(
-        response => expect(response).toEqual(mockHero),
+      service.updateHero(this.mockHero).subscribe(
+        response => expect(response).toEqual(this.mockHero),
         fail
       );
       // Receive PUT request
       const req = httpTestingController.expectOne(service.heroesUrl);
       expect(req.request.method).toEqual('PUT');
       // Respond with the updated hero
-      req.flush(mockHero);
+      req.flush(this.mockHero);
     });
   });
 
   describe('deleteHero', () => {
 
-    // let mockHero: Hero, mockId: number;
-
-    beforeEach(() => {
-      mockHeroes = [...data];
-      this.mockHero = mockHeroes[0];
-      this.mockId = this.mockHero.id;
-    });
-
-
     it('should delete hero using id', () => {
-      const mockUrl = `${service.heroesUrl}/${this.mockId}`;
+      const mockUrl = apiUrl(this.mockId);
       service.deleteHero(this.mockId).subscribe(
         response => expect(response).toEqual(this.mockId),
         fail
@@ -106,7 +96,7 @@ describe('HeroService', () => {
     });
 
     it('should delete hero using hero object', () => {
-      const mockUrl = `${service.heroesUrl}/${this.mockHero.id}`;
+      const mockUrl = apiUrl(this.mockHero.id);
       service.deleteHero(this.mockHero).subscribe(
         response => expect(response).toEqual(this.mockHero.id),
         fail
